@@ -3,7 +3,7 @@ import { Login } from "../Login/Login";
 
 const Main = () => {
     return (
-        <div className="bg-secondary h-screen flex justify-center items-center">
+        <div className="bg-[#f3f5ff] h-screen flex justify-center items-center">
             <Login></Login>
         </div>
     );
