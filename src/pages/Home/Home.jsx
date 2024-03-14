@@ -38,7 +38,7 @@ const Home = () => {
     return (
         <div className="w-screen flex bg-[#d4f4fc]">
             <div className="w-[25%] h-screen bg-[#f3f5ff]">
-                <div className="flex mx-12 items-center my-8">
+                <div className="flex gap-3 mx-12 items-center my-8">
                     <div className="border border-[#1476ff] p-[2px] rounded-full">
                         <img src={user?.photoURL} alt="" width={75} height={75} className="rounded-full" />
                     </div>
@@ -55,7 +55,7 @@ const Home = () => {
                     <div>
                         {contacts?.map(({ name, status, img }) => {
                             return (
-                                <div key={name} className="flex items-center py-4 border-b border-gray-300">
+                                <div key={name} className="flex items-center py-4 border-b border-gray-300 mr-10">
                                     <div className="cursor-pointer flex items-center">
                                         <div>
                                             <img src={img} alt="" width={50} height={50} className="rounded-full" />
@@ -72,7 +72,7 @@ const Home = () => {
                 </div>
             </div>
             <div className="w-[50%] h-screen bg-white flex flex-col items-center">
-                <div className="w-[75%] bg-[#f3f5ff] h-[80px] mt-14 rounded-full flex items-center px-14">
+                <div className="w-[75%] bg-[#f3f5ff] h-[80px] my-8 rounded-full flex items-center px-14">
                     <div className="cursor-pointer"><img src={user?.photoURL} width={60} height={60} alt="" className="rounded-full" /></div>
                     <div className=" ml-4 mr-auto">
                         <h3 className="text-lg font-semibold">{user?.displayName}</h3>
@@ -92,13 +92,60 @@ const Home = () => {
                         </svg>
                     </div>
                 </div>
-                <div className="h-[75%] w-full border overflow-scroll overflow-x-hidden">
-                        <div className="h-[1000px] px-10 py-14">
-                            <div className="h-[80px] w-[300px] bg-[#f3f5ff] rounded-b-xl rounded-tr-xl"></div>
+                <div className="h-[75%] w-full overflow-scroll overflow-x-hidden shadow-sm">
+                    <div className=" p-14">
+                        <div className="p-4 max-w-[50%] mb-6 bg-[#f3f5ff] rounded-b-xl rounded-tr-xl">
+                            Lorem ipsum dolor, sit amet consectetur adipisicing elit.
                         </div>
+                        <div className="p-4 max-w-[50%] mb-6 bg-[#1476ff] rounded-b-xl rounded-tr-xl ml-auto text-white">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                        </div>
+                        <div className="p-4 max-w-[50%] mb-6 bg-[#f3f5ff] rounded-b-xl rounded-tr-xl">
+                            Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+                        </div>
+                        <div className="p-4 max-w-[50%] mb-6 bg-[#1476ff] rounded-b-xl rounded-tr-xl ml-auto text-white">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                        </div>
+                        <div className="p-4 max-w-[50%] mb-6 bg-[#f3f5ff] rounded-b-xl rounded-tr-xl">
+                            Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+                        </div>
+                        <div className="p-4 max-w-[50%] mb-6 bg-[#1476ff] rounded-b-xl rounded-tr-xl ml-auto text-white">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                        </div>
+                        <div className="p-4 max-w-[50%] mb-6 bg-[#f3f5ff] rounded-b-xl rounded-tr-xl">
+                            Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+                        </div>
+                        <div className="p-4 max-w-[50%] mb-6 bg-[#1476ff] rounded-b-xl rounded-tr-xl ml-auto text-white">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                        </div>
+                        <div className="p-4 max-w-[50%] mb-6 bg-[#f3f5ff] rounded-b-xl rounded-tr-xl">
+                            Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+                        </div>
+                        <div className="p-4 max-w-[50%] mb-6 bg-[#1476ff] rounded-b-xl rounded-tr-xl ml-auto text-white">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                        </div>
+                    </div>
+                </div>
+                <div className="w-full p-10 flex items-center">
+                    <input type="text" placeholder="type a message......" className="w-full p-3 shadow-md bg-[#f9faff] focus:ring-0 focus:border-0 outline-none rounded-full border-0" />
+                    <div className="ml-4 bg-[#f9faff] cursor-pointer rounded-full p-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-send" width="30" height="30" viewBox="0 0 24 24" strokeWidth="1.5" stroke="#2c3e50" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M10 14l11 -11" />
+                            <path d="M21 3l-6.5 18a.55 .55 0 0 1 -1 0l-3.5 -7l-7 -3.5a.55 .55 0 0 1 0 -1l18 -6.5" />
+                        </svg>
+                    </div>
+                    <div className="ml-1 bg-[#f9faff] cursor-pointer rounded-full p-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-circle-plus" width="30" height="30" viewBox="0 0 24 24" strokeWidth="1.5" stroke="#2c3e50" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" />
+                            <path d="M9 12h6" />
+                            <path d="M12 9v6" />
+                        </svg>
+                    </div>
                 </div>
             </div>
-            <div className="w-[25%] h-screen"></div>
+            <div className="w-[25%] h-screen bg-[#f9faff]"></div>
         </div>
     );
 };
