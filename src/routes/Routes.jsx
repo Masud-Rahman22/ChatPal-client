@@ -3,6 +3,7 @@ import {
 } from "react-router-dom";
 import Home from "../pages/Home/Home";
 import Main from "../pages/FirstPage/Main";
+import ProtectedRoute from "./ProtectedRoute";
 
 
 const Routes = createBrowserRouter([
@@ -12,7 +13,7 @@ const Routes = createBrowserRouter([
     },
     {
         path: '/home',
-        element: <Home></Home>
+        element: <ProtectedRoute><Home></Home></ProtectedRoute>
     }
 ]);
 
