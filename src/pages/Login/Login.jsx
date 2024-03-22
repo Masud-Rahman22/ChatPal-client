@@ -5,12 +5,20 @@ import { AuthContext } from "../../ContextApi/AuthProvider";
 import { updateProfile } from "firebase/auth";
 import auth from "../../../firebase.config";
 import toast, { Toaster } from 'react-hot-toast';
+import axios from "axios";
 export const Login = () => {
     const { register, handleSubmit } = useForm();
     const {Login,Register, googleLogin} = useContext(AuthContext)
     const [signUp, setSignUp] = useState(false);
     const navigate = useNavigate()
     const onSubmit = ({name,picture,u_email,u_password}) =>{
+        axios.post('http://localhost:5000/api/register',{fullName: name, email: u_email, password: u_password})
+        .then(res => {
+            console.log(res.data)
+        })
+        .catch(err =>{
+            console.error(err)
+        })
         Register(u_email, u_password)
             .then(() => {
                 toast.success("Now Login Please");
@@ -27,6 +35,13 @@ export const Login = () => {
     }
 
     const onRegister = ({email,password}) =>{
+        axios.post('http://localhost:5000/api/login',{ email: email, password: password})
+        .then(res => {
+            console.log(res.data)
+        })
+        .catch(err =>{
+            console.error(err)
+        })
         Login(email,password)
         .then(()=>{
             toast.success("Welcome to ChatPal");
