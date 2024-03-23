@@ -37,7 +37,9 @@ export const Login = () => {
     const onRegister = ({email,password}) =>{
         axios.post('http://localhost:5000/api/login',{ email: email, password: password})
         .then(res => {
-            console.log(res.data)
+            localStorage.setItem('userDetails', JSON.stringify(res.data))
+            toast.success("Welcome to ChatPal");
+            navigate('/home')
         })
         .catch(err =>{
             console.error(err)

@@ -1,40 +1,50 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../ContextApi/AuthProvider";
+import axios from "axios";
 const Home = () => {
     const { user } = useContext(AuthContext)
-    console.log(user)
-    const contacts = [
-        {
-            name: 'Nitol',
-            status: 'active',
-            img: 'https://i.ibb.co/z8M6bQD/99df05b4-d55b-4277-9c89-9da815ff34ca.jpg'
-        },
-        {
-            name: 'Noman',
-            status: 'offline',
-            img: 'https://i.ibb.co/z8M6bQD/99df05b4-d55b-4277-9c89-9da815ff34ca.jpg'
-        },
-        {
-            name: 'Mahmud',
-            status: 'offline',
-            img: 'https://i.ibb.co/z8M6bQD/99df05b4-d55b-4277-9c89-9da815ff34ca.jpg'
-        },
-        {
-            name: 'Raju',
-            status: 'active',
-            img: 'https://i.ibb.co/z8M6bQD/99df05b4-d55b-4277-9c89-9da815ff34ca.jpg'
-        },
-        {
-            name: 'Tanjim',
-            status: 'active',
-            img: 'https://i.ibb.co/z8M6bQD/99df05b4-d55b-4277-9c89-9da815ff34ca.jpg'
-        },
-        {
-            name: 'Provat',
-            status: 'offline',
-            img: 'https://i.ibb.co/z8M6bQD/99df05b4-d55b-4277-9c89-9da815ff34ca.jpg'
-        },
-    ]
+    const [conversations, setConversations] = useState([])
+    const userDetails = JSON.parse(localStorage.getItem('userDetails'));
+    const id = userDetails?.user.id
+    useEffect(()=>{
+        axios.get(`http://localhost:5000/api/conversation/${id}`)
+        .then(res =>{
+            setConversations(res.data)
+        })
+    },[id])
+    // const contacts = [
+    //     {
+    //         name: 'Nitol',
+    //         status: 'active',
+    //         img: 'https://i.ibb.co/z8M6bQD/99df05b4-d55b-4277-9c89-9da815ff34ca.jpg'
+    //     },
+    //     {
+    //         name: 'Noman',
+    //         status: 'offline',
+    //         img: 'https://i.ibb.co/z8M6bQD/99df05b4-d55b-4277-9c89-9da815ff34ca.jpg'
+    //     },
+    //     {
+    //         name: 'Mahmud',
+    //         status: 'offline',
+    //         img: 'https://i.ibb.co/z8M6bQD/99df05b4-d55b-4277-9c89-9da815ff34ca.jpg'
+    //     },
+    //     {
+    //         name: 'Raju',
+    //         status: 'active',
+    //         img: 'https://i.ibb.co/z8M6bQD/99df05b4-d55b-4277-9c89-9da815ff34ca.jpg'
+    //     },
+    //     {
+    //         name: 'Tanjim',
+    //         status: 'active',
+    //         img: 'https://i.ibb.co/z8M6bQD/99df05b4-d55b-4277-9c89-9da815ff34ca.jpg'
+    //     },
+    //     {
+    //         name: 'Provat',
+    //         status: 'offline',
+    //         img: 'https://i.ibb.co/z8M6bQD/99df05b4-d55b-4277-9c89-9da815ff34ca.jpg'
+    //     },
+    // ]
+
     return (
         <div className="w-screen flex bg-[#d4f4fc]">
             <div className="w-[25%] h-screen bg-[#f3f5ff]">
@@ -53,16 +63,17 @@ const Home = () => {
                         Messages
                     </div>
                     <div>
-                        {contacts?.map(({ name, status, img }) => {
+                        {conversations?.map(({ conversationId, user }) => {
+                            console.log(conversationId)
                             return (
-                                <div key={name} className="flex items-center py-4 border-b border-gray-300 mr-10">
+                                <div key={user?.id} className="flex items-center py-4 border-b border-gray-300 mr-10">
                                     <div className="cursor-pointer flex items-center">
                                         <div>
-                                            <img src={img} alt="" width={50} height={50} className="rounded-full" />
+                                            <img src={'img1'} alt="" width={50} height={50} className="rounded-full" />
                                         </div>
                                         <div className="ml-4">
-                                            <h3 className="text-lg font-semibold">{name}</h3>
-                                            <p className="text-xs font-light">{status}</p>
+                                            <h3 className="text-lg font-semibold">{user?.fullName}</h3>
+                                            <p className="text-xs font-light">{user?.email}</p>
                                         </div>
                                     </div>
                                 </div>
