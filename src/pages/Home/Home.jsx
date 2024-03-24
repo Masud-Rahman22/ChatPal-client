@@ -67,7 +67,7 @@ const Home = () => {
                             console.log(conversationId)
                             return (
                                 <div key={user?.id} className="flex items-center py-4 border-b border-gray-300 mr-10">
-                                    <div className="cursor-pointer flex items-center">
+                                    <div onClick={()=>console.log('hello')} className="cursor-pointer flex items-center">
                                         <div>
                                             <img src={'img1'} alt="" width={50} height={50} className="rounded-full" />
                                         </div>
