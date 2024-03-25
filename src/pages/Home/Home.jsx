@@ -45,6 +45,16 @@ const Home = () => {
     //     },
     // ]
 
+    const fetchMessages = async(conversationId)=>{
+        axios.get(`http://localhost:5000/api/message/${conversationId}`)
+        .then(res =>{
+            console.log(res.data)
+        })
+        .catch(err =>{
+            console.error(err)
+        })
+    }
+
     return (
         <div className="w-screen flex bg-[#d4f4fc]">
             <div className="w-[25%] h-screen bg-[#f3f5ff]">
@@ -69,7 +79,7 @@ const Home = () => {
                                     console.log(conversationId)
                                     return (
                                         <div key={user?.id} className="flex items-center py-4 border-b border-gray-300 mr-10">
-                                            <div onClick={() => console.log('hello')} className="cursor-pointer flex items-center">
+                                            <div onClick={() => fetchMessages(conversationId)} className="cursor-pointer flex items-center">
                                                 <div>
                                                     <img src={'img1'} alt="" width={50} height={50} className="rounded-full" />
                                                 </div>
