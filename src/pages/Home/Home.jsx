@@ -6,44 +6,44 @@ const Home = () => {
     const [conversations, setConversations] = useState([])
     const userDetails = JSON.parse(localStorage.getItem('userDetails'));
     const id = userDetails?.user.id
-    useEffect(()=>{
+    useEffect(() => {
         axios.get(`http://localhost:5000/api/conversation/${id}`)
-        .then(res =>{
-            setConversations(res.data)
-        })
-    },[id])
-    const contacts = [
-        {
-            name: 'Nitol',
-            status: 'active',
-            img: 'https://i.ibb.co/z8M6bQD/99df05b4-d55b-4277-9c89-9da815ff34ca.jpg'
-        },
-        {
-            name: 'Noman',
-            status: 'offline',
-            img: 'https://i.ibb.co/z8M6bQD/99df05b4-d55b-4277-9c89-9da815ff34ca.jpg'
-        },
-        {
-            name: 'Mahmud',
-            status: 'offline',
-            img: 'https://i.ibb.co/z8M6bQD/99df05b4-d55b-4277-9c89-9da815ff34ca.jpg'
-        },
-        {
-            name: 'Raju',
-            status: 'active',
-            img: 'https://i.ibb.co/z8M6bQD/99df05b4-d55b-4277-9c89-9da815ff34ca.jpg'
-        },
-        {
-            name: 'Tanjim',
-            status: 'active',
-            img: 'https://i.ibb.co/z8M6bQD/99df05b4-d55b-4277-9c89-9da815ff34ca.jpg'
-        },
-        {
-            name: 'Provat',
-            status: 'offline',
-            img: 'https://i.ibb.co/z8M6bQD/99df05b4-d55b-4277-9c89-9da815ff34ca.jpg'
-        },
-    ]
+            .then(res => {
+                setConversations(res.data)
+            })
+    }, [id])
+    // const contacts = [
+    //     {
+    //         name: 'Nitol',
+    //         status: 'active',
+    //         img: 'https://i.ibb.co/z8M6bQD/99df05b4-d55b-4277-9c89-9da815ff34ca.jpg'
+    //     },
+    //     {
+    //         name: 'Noman',
+    //         status: 'offline',
+    //         img: 'https://i.ibb.co/z8M6bQD/99df05b4-d55b-4277-9c89-9da815ff34ca.jpg'
+    //     },
+    //     {
+    //         name: 'Mahmud',
+    //         status: 'offline',
+    //         img: 'https://i.ibb.co/z8M6bQD/99df05b4-d55b-4277-9c89-9da815ff34ca.jpg'
+    //     },
+    //     {
+    //         name: 'Raju',
+    //         status: 'active',
+    //         img: 'https://i.ibb.co/z8M6bQD/99df05b4-d55b-4277-9c89-9da815ff34ca.jpg'
+    //     },
+    //     {
+    //         name: 'Tanjim',
+    //         status: 'active',
+    //         img: 'https://i.ibb.co/z8M6bQD/99df05b4-d55b-4277-9c89-9da815ff34ca.jpg'
+    //     },
+    //     {
+    //         name: 'Provat',
+    //         status: 'offline',
+    //         img: 'https://i.ibb.co/z8M6bQD/99df05b4-d55b-4277-9c89-9da815ff34ca.jpg'
+    //     },
+    // ]
 
     return (
         <div className="w-screen flex bg-[#d4f4fc]">
@@ -63,22 +63,25 @@ const Home = () => {
                         Messages
                     </div>
                     <div>
-                        {conversations?.map(({ conversationId, user }) => {
-                            console.log(conversationId)
-                            return (
-                                <div key={user?.id} className="flex items-center py-4 border-b border-gray-300 mr-10">
-                                    <div onClick={()=>console.log('hello')} className="cursor-pointer flex items-center">
-                                        <div>
-                                            <img src={'img1'} alt="" width={50} height={50} className="rounded-full" />
+                        {
+                            !conversations.length > 0 ?
+                                conversations?.map(({ conversationId, user }) => {
+                                    console.log(conversationId)
+                                    return (
+                                        <div key={user?.id} className="flex items-center py-4 border-b border-gray-300 mr-10">
+                                            <div onClick={() => console.log('hello')} className="cursor-pointer flex items-center">
+                                                <div>
+                                                    <img src={'img1'} alt="" width={50} height={50} className="rounded-full" />
+                                                </div>
+                                                <div className="ml-4">
+                                                    <h3 className="text-lg font-semibold">{user?.fullName}</h3>
+                                                    <p className="text-xs font-light">{user?.email}</p>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div className="ml-4">
-                                            <h3 className="text-lg font-semibold">{user?.fullName}</h3>
-                                            <p className="text-xs font-light">{user?.email}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            )
-                        })}
+                                    )
+                                }) : <div className="text-center text-lg font-semibold mt-24">No Conversations</div>
+                        }
                     </div>
                 </div>
             </div>
