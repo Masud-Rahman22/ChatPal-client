@@ -12,38 +12,38 @@ const Home = () => {
             setConversations(res.data)
         })
     },[id])
-    // const contacts = [
-    //     {
-    //         name: 'Nitol',
-    //         status: 'active',
-    //         img: 'https://i.ibb.co/z8M6bQD/99df05b4-d55b-4277-9c89-9da815ff34ca.jpg'
-    //     },
-    //     {
-    //         name: 'Noman',
-    //         status: 'offline',
-    //         img: 'https://i.ibb.co/z8M6bQD/99df05b4-d55b-4277-9c89-9da815ff34ca.jpg'
-    //     },
-    //     {
-    //         name: 'Mahmud',
-    //         status: 'offline',
-    //         img: 'https://i.ibb.co/z8M6bQD/99df05b4-d55b-4277-9c89-9da815ff34ca.jpg'
-    //     },
-    //     {
-    //         name: 'Raju',
-    //         status: 'active',
-    //         img: 'https://i.ibb.co/z8M6bQD/99df05b4-d55b-4277-9c89-9da815ff34ca.jpg'
-    //     },
-    //     {
-    //         name: 'Tanjim',
-    //         status: 'active',
-    //         img: 'https://i.ibb.co/z8M6bQD/99df05b4-d55b-4277-9c89-9da815ff34ca.jpg'
-    //     },
-    //     {
-    //         name: 'Provat',
-    //         status: 'offline',
-    //         img: 'https://i.ibb.co/z8M6bQD/99df05b4-d55b-4277-9c89-9da815ff34ca.jpg'
-    //     },
-    // ]
+    const contacts = [
+        {
+            name: 'Nitol',
+            status: 'active',
+            img: 'https://i.ibb.co/z8M6bQD/99df05b4-d55b-4277-9c89-9da815ff34ca.jpg'
+        },
+        {
+            name: 'Noman',
+            status: 'offline',
+            img: 'https://i.ibb.co/z8M6bQD/99df05b4-d55b-4277-9c89-9da815ff34ca.jpg'
+        },
+        {
+            name: 'Mahmud',
+            status: 'offline',
+            img: 'https://i.ibb.co/z8M6bQD/99df05b4-d55b-4277-9c89-9da815ff34ca.jpg'
+        },
+        {
+            name: 'Raju',
+            status: 'active',
+            img: 'https://i.ibb.co/z8M6bQD/99df05b4-d55b-4277-9c89-9da815ff34ca.jpg'
+        },
+        {
+            name: 'Tanjim',
+            status: 'active',
+            img: 'https://i.ibb.co/z8M6bQD/99df05b4-d55b-4277-9c89-9da815ff34ca.jpg'
+        },
+        {
+            name: 'Provat',
+            status: 'offline',
+            img: 'https://i.ibb.co/z8M6bQD/99df05b4-d55b-4277-9c89-9da815ff34ca.jpg'
+        },
+    ]
 
     return (
         <div className="w-screen flex bg-[#d4f4fc]">
