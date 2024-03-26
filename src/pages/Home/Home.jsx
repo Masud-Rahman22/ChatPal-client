@@ -4,8 +4,10 @@ import axios from "axios";
 const Home = () => {
     const { user } = useContext(AuthContext)
     const [conversations, setConversations] = useState([])
+    const [messages, setMessages] = useState([])
     const userDetails = JSON.parse(localStorage.getItem('userDetails'));
     const id = userDetails?.user.id
+    console.log(id)
     useEffect(() => {
         axios.get(`http://localhost:5000/api/conversation/${id}`)
             .then(res => {
@@ -45,16 +47,16 @@ const Home = () => {
     //     },
     // ]
 
-    const fetchMessages = async(conversationId)=>{
+    const fetchMessages = async (conversationId) => {
         axios.get(`http://localhost:5000/api/message/${conversationId}`)
-        .then(res =>{
-            console.log(res.data)
-        })
-        .catch(err =>{
-            console.error(err)
-        })
+            .then(res => {
+                setMessages(res.data)
+            })
+            .catch(err => {
+                console.error(err)
+            })
     }
-
+    console.log(messages)
     return (
         <div className="w-screen flex bg-[#d4f4fc]">
             <div className="w-[25%] h-screen bg-[#f3f5ff]">
@@ -74,7 +76,7 @@ const Home = () => {
                     </div>
                     <div>
                         {
-                            !conversations.length > 0 ?
+                            conversations.length > 0 ?
                                 conversations?.map(({ conversationId, user }) => {
                                     console.log(conversationId)
                                     return (
@@ -118,36 +120,26 @@ const Home = () => {
                 </div>
                 <div className="h-[75%] w-full overflow-scroll overflow-x-hidden shadow-sm">
                     <div className=" p-14">
-                        <div className="p-4 max-w-[50%] mb-6 bg-[#f3f5ff] rounded-b-xl rounded-tr-xl">
-                            Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                        </div>
-                        <div className="p-4 max-w-[50%] mb-6 bg-[#1476ff] rounded-b-xl rounded-tr-xl ml-auto text-white">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        </div>
-                        <div className="p-4 max-w-[50%] mb-6 bg-[#f3f5ff] rounded-b-xl rounded-tr-xl">
-                            Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                        </div>
-                        <div className="p-4 max-w-[50%] mb-6 bg-[#1476ff] rounded-b-xl rounded-tr-xl ml-auto text-white">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        </div>
-                        <div className="p-4 max-w-[50%] mb-6 bg-[#f3f5ff] rounded-b-xl rounded-tr-xl">
-                            Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                        </div>
-                        <div className="p-4 max-w-[50%] mb-6 bg-[#1476ff] rounded-b-xl rounded-tr-xl ml-auto text-white">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        </div>
-                        <div className="p-4 max-w-[50%] mb-6 bg-[#f3f5ff] rounded-b-xl rounded-tr-xl">
-                            Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                        </div>
-                        <div className="p-4 max-w-[50%] mb-6 bg-[#1476ff] rounded-b-xl rounded-tr-xl ml-auto text-white">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        </div>
-                        <div className="p-4 max-w-[50%] mb-6 bg-[#f3f5ff] rounded-b-xl rounded-tr-xl">
-                            Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                        </div>
-                        <div className="p-4 max-w-[50%] mb-6 bg-[#1476ff] rounded-b-xl rounded-tr-xl ml-auto text-white">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        </div>
+                        {
+                            messages.length > 0 ?
+                                messages?.map((messageObj, i) => {
+                                    const {message, user} = messageObj;
+                                    return (
+                                        <div
+                                            className={`p-4 max-w-[50%] mb-6 rounded-b-xl rounded-tr-xl ${
+                                                id === user?.id ? "bg-[#1476ff] text-white ml-auto" : "bg-[#f3f5ff]"
+                                            }`}
+                                            key={i}
+                                        >
+                                            {message}
+                                        </div>
+                                    );
+
+                                })
+                                :
+                                <div className="text-center text-lg font-semibold mt-24">No Messages</div>
+                        }
+
                     </div>
                 </div>
                 <div className="w-full p-10 flex items-center">
@@ -165,8 +157,14 @@ const Home = () => {
                             <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" />
                             <path d="M9 12h6" />
                             <path d="M12 9v6" />
+                            {/* <div className="p-4 max-w-[50%] mb-6 bg-[#1476ff] rounded-b-xl rounded-tr-xl ml-auto text-white" key={i}>
+                                                {message}
+                                            </div> */}
                         </svg>
                     </div>
+                    {/* <div className="p-4 max-w-[50%] mb-6 bg-[#f3f5ff] rounded-b-xl rounded-tr-xl" key={user?.id}>
+                                                {message}
+                                            </div> */}
                 </div>
             </div>
             <div className="w-[25%] h-screen bg-[#f9faff]"></div>
