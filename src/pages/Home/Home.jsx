@@ -5,6 +5,7 @@ const Home = () => {
     const { user } = useContext(AuthContext)
     const [conversations, setConversations] = useState([])
     const [messages, setMessages] = useState([])
+    const [users, setUsers] = useState([])
     const [message, setMessage] = useState(null)
     const userDetails = JSON.parse(localStorage.getItem('userDetails'));
     const id = userDetails?.user.id
@@ -47,6 +48,16 @@ const Home = () => {
     //     },
     // ]
 
+    useEffect(()=>{
+        axios.get('http://localhost:5000/api/users')
+        .then(res =>{
+            setUsers(res.data)
+        })
+        .catch(err =>{
+            console.error(err)
+        })
+    },[])
+    console.log(users)
     const fetchMessages = async (conversationId, user) => {
         axios.get(`http://localhost:5000/api/message/${conversationId}`)
             .then(res => {
@@ -86,7 +97,7 @@ const Home = () => {
                                 conversations?.map(({ conversationId, user }) => {
                                     console.log(conversationId)
                                     return (
-                                        <div key={user?.id} className="flex items-center py-4 border-b border-gray-300 mr-10">
+                                        <div key={conversationId} className="flex items-center py-4 border-b border-gray-300 mr-10">
                                             <div onClick={() => fetchMessages(conversationId, user)} className="cursor-pointer flex items-center">
                                                 <div>
                                                     <img src={'img1'} alt="" width={50} height={50} className="rounded-full" />
@@ -177,7 +188,30 @@ const Home = () => {
                     </div>
                 }
             </div>
-            <div className="w-[25%] h-screen bg-[#f9faff]"></div>
+            <div className="w-[25%] h-screen bg-[#f9faff]">
+                <h3 className="px-8 py-12 text-blue-600">people</h3>
+                <div className="px-8">
+                        {
+                            users?.length > 0 ?
+                                users?.map(({ userId, user }) => {
+                                    console.log(userId)
+                                    return (
+                                        <div key={userId} className="flex items-center py-4 border-b border-gray-300 mr-10">
+                                            <div onClick={() => fetchMessages(userId, user)} className="cursor-pointer flex items-center">
+                                                <div>
+                                                    <img src={user?.photo} alt="" width={50} height={50} className="rounded-full" />
+                                                </div>
+                                                <div className="ml-4">
+                                                    <h3 className="text-lg font-semibold">{user?.fullName}</h3>
+                                                    <p className="text-xs font-light">{user?.email}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )
+                                }) : <div className="text-center text-lg font-semibold mt-24">No Conversations</div>
+                        }
+                    </div>
+            </div>
         </div>
     );
 };
