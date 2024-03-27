@@ -74,6 +74,7 @@ const Home = () => {
                 setMessage('')
             })
     }
+    console.log('messages -------', messages)
     return (
         <div className="w-screen flex bg-[#d4f4fc]">
             <div className="w-[25%] h-screen bg-[#f3f5ff]">
@@ -95,12 +96,12 @@ const Home = () => {
                         {
                             conversations.length > 0 ?
                                 conversations?.map(({ conversationId, user }) => {
-                                    console.log(conversationId)
+                                    console.log(user)
                                     return (
                                         <div key={conversationId} className="flex items-center py-4 border-b border-gray-300 mr-10">
                                             <div onClick={() => fetchMessages(conversationId, user)} className="cursor-pointer flex items-center">
                                                 <div>
-                                                    <img src={'img1'} alt="" width={50} height={50} className="rounded-full" />
+                                                    <img src={user?.photo} alt="" width={50} height={50} className="rounded-full" />
                                                 </div>
                                                 <div className="ml-4">
                                                     <h3 className="text-lg font-semibold">{user?.fullName}</h3>
@@ -118,7 +119,7 @@ const Home = () => {
                 {
                     messages?.receiver?.fullName &&
                     <div className="w-[75%] bg-[#f3f5ff] h-[80px] my-8 rounded-full flex items-center px-14 py-6">
-                        <div className="cursor-pointer"><img src={''} width={60} height={60} alt="" className="rounded-full" /></div>
+                        <div className="cursor-pointer"><img src={messages?.receiver?.photo} width={60} height={60} alt="" className="rounded-full" /></div>
                         <div className=" ml-4 mr-auto">
                             <h3 className="text-lg font-semibold">{messages?.receiver?.fullName}</h3>
                             <h3 className="text-sm font-extralight py-1">{messages?.receiver?.email}</h3>
