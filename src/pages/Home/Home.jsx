@@ -12,6 +12,7 @@ const Home = () => {
     useEffect(() => {
         axios.get(`http://localhost:5000/api/conversation/${id}`)
             .then(res => {
+                console.log(res.data)
                 setConversations(res.data)
             })
     }, [id])
@@ -49,32 +50,34 @@ const Home = () => {
     // ]
 
     useEffect(()=>{
-        axios.get('http://localhost:5000/api/users')
+        axios.get(`http://localhost:5000/api/users/${id}`)
         .then(res =>{
             setUsers(res.data)
         })
         .catch(err =>{
             console.error(err)
         })
-    },[])
-    console.log(users)
+    },[id])
+    
     const fetchMessages = async (conversationId, user) => {
-        axios.get(`http://localhost:5000/api/message/${conversationId}`)
-            .then(res => {
-                setMessages({ messages: res.data, receiver: user, conversationId })
-            })
-            .catch(err => {
-                console.error(err)
-            })
+        axios.get(`http://localhost:5000/api/message/${conversationId}?senderId=${id}&receiverId=${user?.userId}`)
+        .then(res =>{
+            setMessages({ messages: res.data, receiver: user, conversationId })
+        })
+        .catch(err =>{
+            console.error(err)
+        })
     }
+    console.log(messages)
     const sendMessage = () => {
-        axios.post('http://localhost:5000/api/message', { conversationId: messages?.conversationId, senderId: id, message: message, receiverId: messages?.receiver?.receiverId})
+    console.log("sender message" , {receiverId: messages?.receiver?.userId})
+        axios.post('http://localhost:5000/api/message', { conversationId: messages?.conversationId, senderId: id, message: message, receiverId: messages?.receiver?.userId})
             .then(res => {
                 setMessage(res.data)
                 setMessage('')
             })
     }
-    console.log('messages -------', messages)
+    console.log(conversations)
     return (
         <div className="w-screen flex bg-[#d4f4fc]">
             <div className="w-[25%] h-screen bg-[#f3f5ff]">
@@ -96,7 +99,7 @@ const Home = () => {
                         {
                             conversations.length > 0 ?
                                 conversations?.map(({ conversationId, user }) => {
-                                    console.log(user)
+                                    console.log('user', user)
                                     return (
                                         <div key={conversationId} className="flex items-center py-4 border-b border-gray-300 mr-10">
                                             <div onClick={() => fetchMessages(conversationId, user)} className="cursor-pointer flex items-center">
@@ -198,7 +201,7 @@ const Home = () => {
                                     console.log(userId)
                                     return (
                                         <div key={userId} className="flex items-center py-4 border-b border-gray-300 mr-10">
-                                            <div onClick={() => fetchMessages(userId, user)} className="cursor-pointer flex items-center">
+                                            <div onClick={() => fetchMessages('new', user)} className="cursor-pointer flex items-center">
                                                 <div>
                                                     <img src={user?.photo} alt="" width={50} height={50} className="rounded-full" />
                                                 </div>
