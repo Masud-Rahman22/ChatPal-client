@@ -1,7 +1,7 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { AuthContext } from "../../ContextApi/AuthProvider";
-import {io} from 'socket.io-client'
+import { io } from 'socket.io-client'
 const Home = () => {
     const { user } = useContext(AuthContext)
     const [conversations, setConversations] = useState([])
@@ -9,27 +9,31 @@ const Home = () => {
     const [users, setUsers] = useState([])
     const [message, setMessage] = useState('')
     const [socket, setSocket] = useState(null);
+    const messageRef = useRef();
     const userDetails = JSON.parse(localStorage.getItem('userDetails'));
-    const storageUser = userDetails?.user;
     const id = userDetails?.user?.id
 
-    useEffect(()=>{
+    useEffect(() => {
         setSocket(io('http://localhost:8080'))
-    },[])
+    }, [])
 
-    useEffect(()=>{
+    useEffect(() => {
         socket?.emit('addUser', id)
-        socket?.on('getUsers', users=>{
+        socket?.on('getUsers', users => {
             console.log('activeUsers', users)
         })
-        socket?.on('getMessage', (data)=>{
+        socket?.on('getMessage', (data) => {
             console.log('data', data)
-            setMessages(prev=>({
+            setMessages(prev => ({
                 ...prev,
-                messages: [...prev.messages, {user: data.user, message: data.message}]
+                messages: [...prev.messages, { user: data.user, message: data.message }]
             }))
         })
-    },[socket])
+    }, [socket])
+
+    useEffect(() => {
+        messageRef?.current?.scrollIntoView({ behavior: 'smooth' })
+    }, [messages?.messages])
 
     useEffect(() => {
         axios.get(`http://localhost:5000/api/conversation/${id}`)
@@ -70,35 +74,35 @@ const Home = () => {
     //     },
     // ]
 
-    useEffect(()=>{
+    useEffect(() => {
         axios.get(`http://localhost:5000/api/users/${id}`)
-        .then(res =>{
-            setUsers(res.data)
-        })
-        .catch(err =>{
-            console.error(err)
-        })
-    },[id])
-    
+            .then(res => {
+                setUsers(res.data)
+            })
+            .catch(err => {
+                console.error(err)
+            })
+    }, [id])
+
     const fetchMessages = async (conversationId, user) => {
         axios.get(`http://localhost:5000/api/message/${conversationId}?senderId=${id}&&receiverId=${user?.userId}`)
-        .then(res =>{
-            setMessages({ messages: res.data, receiver: user, conversationId })
-        })
-        .catch(err =>{
-            console.error(err)
-        })
+            .then(res => {
+                setMessages({ messages: res.data, receiver: user, conversationId })
+            })
+            .catch(err => {
+                console.error(err)
+            })
     }
     console.log(messages)
     const sendMessage = () => {
         socket?.emit('sendMessage', {
-            conversationId: messages?.conversationId, 
-            senderId: id, 
-            message: message, 
+            conversationId: messages?.conversationId,
+            senderId: id,
+            message: message,
             receiverId: messages?.receiver?.receiverId
         })
-        
-        axios.post('http://localhost:5000/api/message', { conversationId: messages?.conversationId, senderId: id, message: message, receiverId: messages?.receiver?.receiverId})
+
+        axios.post('http://localhost:5000/api/message', { conversationId: messages?.conversationId, senderId: id, message: message, receiverId: messages?.receiver?.receiverId })
             .then(res => {
                 console.log(res.data)
                 setMessage(res.data)
@@ -175,13 +179,16 @@ const Home = () => {
                                 messages?.messages?.map((messageObj, i) => {
                                     const { message, user } = messageObj;
                                     return (
-                                        <div
-                                            className={`p-4 max-w-[50%] mb-6 rounded-b-xl rounded-tr-xl ${id === user?.id ? "bg-[#1476ff] text-white ml-auto" : "bg-[#f3f5ff]"
-                                                }`}
-                                            key={i}
-                                        >
-                                            {message}
-                                        </div>
+                                        <>
+                                            <div
+                                                className={`p-4 max-w-[50%] mb-6 rounded-b-xl rounded-tr-xl ${id === user?.id ? "bg-[#1476ff] text-white ml-auto" : "bg-[#f3f5ff]"
+                                                    }`}
+                                                key={i}
+                                            >
+                                                {message}
+                                            </div>
+                                            <div ref={messageRef}></div>
+                                        </>
                                     );
 
                                 })
@@ -221,25 +228,25 @@ const Home = () => {
             <div className="w-[25%] h-screen bg-[#f9faff]">
                 <h3 className="px-8 py-12 text-blue-600">people</h3>
                 <div className="px-8">
-                        {
-                            users?.length > 0 ?
-                                users?.map(({ userId, user }) => {
-                                    return (
-                                        <div key={userId} className="flex items-center py-4 border-b border-gray-300 mr-10">
-                                            <div onClick={() => fetchMessages('new', user)} className="cursor-pointer flex items-center">
-                                                <div>
-                                                    <img src={user?.photo} alt="" width={50} height={50} className="rounded-full" />
-                                                </div>
-                                                <div className="ml-4">
-                                                    <h3 className="text-lg font-semibold">{user?.fullName}</h3>
-                                                    <p className="text-xs font-light">{user?.email}</p>
-                                                </div>
+                    {
+                        users?.length > 0 ?
+                            users?.map(({ userId, user }) => {
+                                return (
+                                    <div key={userId} className="flex items-center py-4 border-b border-gray-300 mr-10">
+                                        <div onClick={() => fetchMessages('new', user)} className="cursor-pointer flex items-center">
+                                            <div>
+                                                <img src={user?.photo} alt="" width={50} height={50} className="rounded-full" />
+                                            </div>
+                                            <div className="ml-4">
+                                                <h3 className="text-lg font-semibold">{user?.fullName}</h3>
+                                                <p className="text-xs font-light">{user?.email}</p>
                                             </div>
                                         </div>
-                                    )
-                                }) : <div className="text-center text-lg font-semibold mt-24">No Conversations</div>
-                        }
-                    </div>
+                                    </div>
+                                )
+                            }) : <div className="text-center text-lg font-semibold mt-24">No Conversations</div>
+                    }
+                </div>
             </div>
         </div>
     );
