@@ -1,14 +1,21 @@
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { AuthContext } from "../../ContextApi/AuthProvider";
+import {io} from 'socket.io-client'
 const Home = () => {
     const { user } = useContext(AuthContext)
     const [conversations, setConversations] = useState([])
     const [messages, setMessages] = useState([])
     const [users, setUsers] = useState([])
     const [message, setMessage] = useState(null)
+    const [socket, setSocket] = useState(null);
     const userDetails = JSON.parse(localStorage.getItem('userDetails'));
     const id = userDetails?.user.id
+
+    useEffect(()=>{
+        setSocket(io('http://localhost:8080'))
+    },[])
+
     useEffect(() => {
         axios.get(`http://localhost:5000/api/conversation/${id}`)
             .then(res => {
@@ -60,15 +67,15 @@ const Home = () => {
     },[id])
     
     const fetchMessages = async (conversationId, user) => {
-        axios.get(`http://localhost:5000/api/message/${conversationId}?senderId=${id}&receiverId=${user?.userId}`)
+        axios.get(`http://localhost:5000/api/message/${conversationId}?senderId=${id}&&receiverId=${user?.userId}`)
         .then(res =>{
             setMessages({ messages: res.data, receiver: user, conversationId })
+            console.log(user?.userId)
         })
         .catch(err =>{
             console.error(err)
         })
     }
-    console.log(messages)
     const sendMessage = () => {
     console.log("sender message" , {receiverId: messages?.receiver?.userId})
         axios.post('http://localhost:5000/api/message', { conversationId: messages?.conversationId, senderId: id, message: message, receiverId: messages?.receiver?.userId})
@@ -77,7 +84,6 @@ const Home = () => {
                 setMessage('')
             })
     }
-    console.log(conversations)
     return (
         <div className="w-screen flex bg-[#d4f4fc]">
             <div className="w-[25%] h-screen bg-[#f3f5ff]">
@@ -198,7 +204,7 @@ const Home = () => {
                         {
                             users?.length > 0 ?
                                 users?.map(({ userId, user }) => {
-                                    console.log(userId)
+                                    console.log(user)
                                     return (
                                         <div key={userId} className="flex items-center py-4 border-b border-gray-300 mr-10">
                                             <div onClick={() => fetchMessages('new', user)} className="cursor-pointer flex items-center">
