@@ -10,16 +10,30 @@ const Home = () => {
     const [message, setMessage] = useState(null)
     const [socket, setSocket] = useState(null);
     const userDetails = JSON.parse(localStorage.getItem('userDetails'));
-    const id = userDetails?.user.id
+    const storageUser = userDetails?.user;
+    const id = userDetails?.user?.id
 
     useEffect(()=>{
         setSocket(io('http://localhost:8080'))
     },[])
 
+    useEffect(()=>{
+        socket?.emit('addUser', id)
+        socket?.on('getUsers', users=>{
+            console.log('activeUsers', users)
+        })
+        socket?.on('getMessage', (data)=>{
+            console.log('data', data)
+            setMessages(prev=>({
+                ...prev,
+                messages: [...prev.messages, {storageUser, message: data.message}]
+            }))
+        })
+    },[socket,id,storageUser])
+
     useEffect(() => {
         axios.get(`http://localhost:5000/api/conversation/${id}`)
             .then(res => {
-                console.log(res.data)
                 setConversations(res.data)
             })
     }, [id])
@@ -70,14 +84,18 @@ const Home = () => {
         axios.get(`http://localhost:5000/api/message/${conversationId}?senderId=${id}&&receiverId=${user?.userId}`)
         .then(res =>{
             setMessages({ messages: res.data, receiver: user, conversationId })
-            console.log(user?.userId)
         })
         .catch(err =>{
             console.error(err)
         })
     }
     const sendMessage = () => {
-    console.log("sender message" , {receiverId: messages?.receiver?.userId})
+        socket?.emit('sendMessage', {
+            conversationId: messages?.conversationId, 
+            senderId: id, 
+            message: message, 
+            receiverId: messages?.receiver?.userId
+        })
         axios.post('http://localhost:5000/api/message', { conversationId: messages?.conversationId, senderId: id, message: message, receiverId: messages?.receiver?.userId})
             .then(res => {
                 setMessage(res.data)
@@ -105,7 +123,6 @@ const Home = () => {
                         {
                             conversations.length > 0 ?
                                 conversations?.map(({ conversationId, user }) => {
-                                    console.log('user', user)
                                     return (
                                         <div key={conversationId} className="flex items-center py-4 border-b border-gray-300 mr-10">
                                             <div onClick={() => fetchMessages(conversationId, user)} className="cursor-pointer flex items-center">
@@ -204,7 +221,6 @@ const Home = () => {
                         {
                             users?.length > 0 ?
                                 users?.map(({ userId, user }) => {
-                                    console.log(user)
                                     return (
                                         <div key={userId} className="flex items-center py-4 border-b border-gray-300 mr-10">
                                             <div onClick={() => fetchMessages('new', user)} className="cursor-pointer flex items-center">
