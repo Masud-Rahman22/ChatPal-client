@@ -5,9 +5,9 @@ import {io} from 'socket.io-client'
 const Home = () => {
     const { user } = useContext(AuthContext)
     const [conversations, setConversations] = useState([])
-    const [messages, setMessages] = useState([])
+    const [messages, setMessages] = useState({})
     const [users, setUsers] = useState([])
-    const [message, setMessage] = useState(null)
+    const [message, setMessage] = useState('')
     const [socket, setSocket] = useState(null);
     const userDetails = JSON.parse(localStorage.getItem('userDetails'));
     const storageUser = userDetails?.user;
@@ -26,10 +26,10 @@ const Home = () => {
             console.log('data', data)
             setMessages(prev=>({
                 ...prev,
-                messages: [...prev.messages, {storageUser, message: data.message}]
+                messages: [...prev.messages, {user: data.user, message: data.message}]
             }))
         })
-    },[socket,id,storageUser])
+    },[socket])
 
     useEffect(() => {
         axios.get(`http://localhost:5000/api/conversation/${id}`)
@@ -89,15 +89,18 @@ const Home = () => {
             console.error(err)
         })
     }
+    console.log(messages)
     const sendMessage = () => {
         socket?.emit('sendMessage', {
             conversationId: messages?.conversationId, 
             senderId: id, 
             message: message, 
-            receiverId: messages?.receiver?.userId
+            receiverId: messages?.receiver?.receiverId
         })
-        axios.post('http://localhost:5000/api/message', { conversationId: messages?.conversationId, senderId: id, message: message, receiverId: messages?.receiver?.userId})
+        
+        axios.post('http://localhost:5000/api/message', { conversationId: messages?.conversationId, senderId: id, message: message, receiverId: messages?.receiver?.receiverId})
             .then(res => {
+                console.log(res.data)
                 setMessage(res.data)
                 setMessage('')
             })
