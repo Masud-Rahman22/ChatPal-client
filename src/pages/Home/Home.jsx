@@ -225,7 +225,7 @@ const Home = () => {
                     </div>
                 }
             </div>
-            <div className="w-[25%] h-screen bg-[#f9faff]">
+            <div className="w-[25%] h-screen bg-[#f9faff] overflow-scroll">
                 <h3 className="px-8 py-12 text-blue-600">people</h3>
                 <div className="px-8">
                     {
