@@ -13,6 +13,7 @@ const Home = () => {
     const userDetails = JSON.parse(localStorage.getItem('userDetails'));
     const id = userDetails?.user?.id
 
+    // socket 
     useEffect(() => {
         setSocket(io('http://localhost:8080'))
     }, [])
