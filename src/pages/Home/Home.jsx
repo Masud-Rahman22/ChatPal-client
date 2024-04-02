@@ -122,6 +122,9 @@ const Home = () => {
                         <p className="text-lg font-light">My Account</p>
                     </div>
                 </div>
+                <div>
+                    <h1>make a group</h1>
+                </div>
                 <hr />
                 <div className="ml-14 mt-5">
                     <div className="text-[#1476ff] text-lg">
