@@ -12,7 +12,7 @@ export const Login = () => {
     const [signUp, setSignUp] = useState(false);
     const navigate = useNavigate()
     const onSubmit = ({name,picture,u_email,u_password}) =>{
-        axios.post('http://localhost:5000/api/register',{fullName: name, email: u_email, password: u_password})
+        axios.post('https://chat-pal-server.vercel.app/api/register',{fullName: name, email: u_email, password: u_password})
         .then(res => {
             console.log(res.data)
         })
@@ -35,7 +35,7 @@ export const Login = () => {
     }
 
     const onRegister = ({email,password}) =>{
-        axios.post('http://localhost:5000/api/login',{ email: email, password: password})
+        axios.post('https://chat-pal-server.vercel.app/api/login',{ email: email, password: password})
         .then(res => {
             localStorage.setItem('userDetails', JSON.stringify(res.data))
             toast.success("Welcome to ChatPal");

@@ -15,7 +15,7 @@ const Home = () => {
 
     // socket 
     useEffect(() => {
-        setSocket(io('http://localhost:8080'))
+        setSocket(io('https://chat-pal-server.vercel.app'))
     }, [])
 
     useEffect(() => {
@@ -37,7 +37,7 @@ const Home = () => {
     }, [messages?.messages])
 
     useEffect(() => {
-        axios.get(`http://localhost:5000/api/conversation/${id}`)
+        axios.get(`https://chat-pal-server.vercel.app/api/conversation/${id}`)
             .then(res => {
                 setConversations(res.data)
             })
@@ -76,7 +76,7 @@ const Home = () => {
     // ]
 
     useEffect(() => {
-        axios.get(`http://localhost:5000/api/users/${id}`)
+        axios.get(`https://chat-pal-server.vercel.app/api/users/${id}`)
             .then(res => {
                 setUsers(res.data)
             })
@@ -86,7 +86,7 @@ const Home = () => {
     }, [id])
 
     const fetchMessages = async (conversationId, user) => {
-        axios.get(`http://localhost:5000/api/message/${conversationId}?senderId=${id}&&receiverId=${user?.userId}`)
+        axios.get(`https://chat-pal-server.vercel.app/api/message/${conversationId}?senderId=${id}&&receiverId=${user?.userId}`)
             .then(res => {
                 setMessages({ messages: res.data, receiver: user, conversationId })
             })
@@ -103,7 +103,7 @@ const Home = () => {
             receiverId: messages?.receiver?.receiverId
         })
 
-        axios.post('http://localhost:5000/api/message', { conversationId: messages?.conversationId, senderId: id, message: message, receiverId: messages?.receiver?.receiverId })
+        axios.post('https://chat-pal-server.vercel.app/api/message', { conversationId: messages?.conversationId, senderId: id, message: message, receiverId: messages?.receiver?.receiverId })
             .then(res => {
                 console.log(res.data)
                 setMessage(res.data)
